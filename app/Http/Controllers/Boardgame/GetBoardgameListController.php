@@ -36,7 +36,7 @@ class GetBoardgameListController extends Controller
             ], 422));
         }
         try{
-            $user = User::findOrFail($id);
+            $user = User::findOrFail($user_id);
             $boardgames = $user->boardgames()->get();
             return response()->json([
                 'success' => true,
