@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'isDisabled',
     ];
 
     /**
@@ -44,10 +45,10 @@ class User extends Authenticatable
 
     /**
      * Return the current status of this user.
-     * 0.False.Disabled
-     * 1.True.Enabled
+     * 0.False.Enabled
+     * 1.True.Disabled
      */
-    public function isEnabled(){
-        return $this->isEnabled;
+    public function isDisabled(){
+        return $this->isDisabled;
     }
 }

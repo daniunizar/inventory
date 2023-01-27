@@ -46,7 +46,7 @@ class AuthController extends Controller
             $this->user = User::where('email', $request->email)->first();
             
             // Enabled/Disabled user validation
-            if(!$this->user->isEnabled()){
+            if($this->user->isDisabled()){
                 throw new \ErrorException('El usuario se encuentra actualmente deshabilitado');
             }
 
