@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Boardgame;
 
 use App\Http\Controllers\Controller;
-use App\Models\Boardgame;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
