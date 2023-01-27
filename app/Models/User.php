@@ -43,6 +43,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //RELATIONSHIPS
+    /**
+     * Get the boardgames for the user.
+     */
+    public function boardgames()
+    {
+        return $this->hasMany(Boardgame::class);
+    }
+
+    //METHODS
     /**
      * Return the current status of this user.
      * 0.False.Enabled

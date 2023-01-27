@@ -39,6 +39,7 @@ Route::group([
     'middleware' => 'auth:sanctum',
 ], function ($router) {  
   // ... all routes
+  Route::get('boardgame/items/{user_id}', [App\Http\Controllers\Boardgame\GetBoardgameListController::class, '__invoke'])->name('boardgame.items');
   //auth
   Route::post('auth/me', 'App\Http\Controllers\Api\AuthController@me');
 });
