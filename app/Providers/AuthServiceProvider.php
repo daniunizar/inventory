@@ -29,8 +29,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-boardgame', function (User $user, Boardgame $boardgame){
+        //not used
+        // Gate::define('update-boardgame', function (User $user, Boardgame $boardgame){
+        //     return $boardgame->user_id == $user->id;
+        //   });
+        Gate::define('delete-boardgame', function (User $user, Boardgame $boardgame){
             return $boardgame->user_id == $user->id;
-          });
+        });
     }
 }
