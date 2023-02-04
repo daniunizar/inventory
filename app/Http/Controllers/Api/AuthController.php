@@ -21,7 +21,6 @@ class AuthController extends Controller
     public function loginUser(Request $request)
     {
         try {
-            Log::debug("Intentando Loguer");
             $validateUser = Validator::make($request->all(), 
             [
                 'email' => 'required|email',
@@ -55,6 +54,49 @@ class AuthController extends Controller
                 'message' => 'Usuario autenticado con exito',
                 'token' => $this->user->createToken("API TOKEN")->plainTextToken
             ], 200);
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+    /**
+     * Login The User
+     * @param Request $request
+     * @return User
+     */
+    public function registerUser(Request $request)
+    {
+        try {
+            $validateUser = Validator::make($request->all(), 
+            [
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|confirmed',
+                'user_name' => 'required|string'
+            ]);
+
+            if($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Error de validacion',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            $data = [
+                'user_name'=>$request->input('user_name'),
+                'email'=>$request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'birth_date'=>now(),
+            ];
+            $user = User::create($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Usuario generado con exito',
+            ], 201);
             
         } catch (\Throwable $th) {
             return response()->json([
