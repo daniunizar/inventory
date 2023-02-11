@@ -52,7 +52,8 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Usuario autenticado con exito',
-                'token' => $this->user->createToken("API TOKEN")->plainTextToken
+                'token' => $this->user->createToken("API TOKEN")->plainTextToken,
+                'user'  => ["user_name"=>$this->user->user_name, "id"=>$this->user->id],
             ], 200);
             
         } catch (\Throwable $th) {
