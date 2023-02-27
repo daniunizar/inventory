@@ -43,6 +43,7 @@ Route::group([
   Route::get('boardgame/items/{user_id}', [App\Http\Controllers\Boardgame\GetBoardgameListController::class, '__invoke'])->name('boardgame.items');
   Route::get('boardgame/item/show/{boardgame_id}', [App\Http\Controllers\Boardgame\ShowBoardgameController::class, '__invoke'])->name('boardgame.item.show');
   Route::post('boardgame/item/store', [App\Http\Controllers\Boardgame\StoreBoardgameController::class, '__invoke'])->name('boardgame.item.store');
+  Route::post('boardgame/item/create', [App\Http\Controllers\Boardgame\StoreBoardgameController::class, '__invoke'])->name('boardgame.item.create');
   Route::put('boardgame/item/update', [App\Http\Controllers\Boardgame\UpdateBoardgameController::class, '__invoke'])->name('boardgame.item.update');
   Route::delete('boardgame/item/delete/{boardgame_id}', [App\Http\Controllers\Boardgame\DeleteBoardgameController::class, '__invoke'])->name('boardgame.item.delete');
   //auth
