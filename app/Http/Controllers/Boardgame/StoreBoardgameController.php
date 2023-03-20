@@ -26,12 +26,14 @@ class StoreBoardgameController extends Controller
         try{
             $user = User::findOrFail(Auth::id());
             $data = [
-                'label' => $request->input('label'),
-                'description' => $request->input('description'),
-                'editorial' => $request->input('editorial'),
-                'min_players' => $request->input('min_players'),
-                'max_players' => $request->input('max_players'),
-                'user_id' => $user->id,
+                'label' => $request->input('label'),//can not be null
+                'description' => $request->input('description')??null,
+                'editorial' => $request->input('editorial')??null,
+                'min_players' => $request->input('min_players')??null,
+                'max_players' => $request->input('max_players')??null,
+                'min_age' => $request->input('min_age')??null,
+                'max_age' => $request->input('max_age')??null,
+                'user_id' => $user->id,//cant not be null
             ];
 
             $boardgame = Boardgame::create($data);

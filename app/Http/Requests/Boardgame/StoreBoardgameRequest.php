@@ -27,14 +27,16 @@ class StoreBoardgameRequest extends FormRequest
     {
         return [
             'label'         => 'required|string',
-            'description'   => 'sometimes|nullable|string',
-            'editorial'     => 'sometimes|nullable|string',
-            'min_players'   => 'sometimes|nullable|integer|min:1',
-            'max_players'   => 'sometimes|nullable|integer|min:1',
+            'description'   => 'nullable|string',
+            'editorial'     => 'nullable|string',
+            'min_players'   => 'nullable|integer|min:1',
+            'max_players'   => 'nullable|integer|min:1',
+            'min_age'       => 'nullable|integer|min:0',
+            'max_age'       => 'nullable|integer|max:99',
         ];
     }
 
-    /**
+ /**
      * Configure the validator instance.
      *
      * @param  \Illuminate\Validation\Validator  $validator
@@ -43,12 +45,33 @@ class StoreBoardgameRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
+            //check players range
             if(!empty($this->min_players) && !empty($this->max_players)){
-                if ($this->min_players > $this->max_players) {
-                    $validator->errors()->add('min_players', 'El número mínimo de jugadores no puede ser superior al número máximo de jugadores');
+                if (!$this->isValidPlayersRange()) {
+                    $validator->errors()->add('max_players', 'El número máximo de jugadores no puede ser inferior al número mínimo de jugadores');
+                }
+            }
+            //check age range
+            if(!empty($this->min_age!=null) && !empty($this->max_age!=null)){
+                if(!$this->isValidAgeRange()){
+                    $validator->errors()->add('max_age', 'La edad máxima de juego recomendada no puede ser inferior a la edad mínima de juego recomendada');
                 }
             }
         });
+    }
+    public function isValidPlayersRange():bool{
+        $is_valid = true;
+            if($this->min_players > $this->max_players){
+                $is_valid = false;
+            } 
+        return $is_valid;
+    }
+    public function isValidAgeRange():bool{
+        $is_valid = true;
+            if($this->min_age > $this->max_age){
+                $is_valid = false;
+            }
+        return $is_valid;
     }
     public function failedValidation(Validator $validator) {
 		throw new HttpResponseException(response()->json([

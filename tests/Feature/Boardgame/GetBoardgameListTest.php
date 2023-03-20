@@ -49,17 +49,17 @@ class GetBoardgameListTest extends ApiTestCase
         //Check fields of Boardgames
         $parsedResponse = json_decode($response->content());
 
-        foreach($boardgames as $key => $boardgame){
-            $this->assertObjectHasAttribute('id', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('label', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('description', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('editorial', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('min_players', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('max_players', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('user_id', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('created_at', $parsedResponse->data[0]);
-            $this->assertObjectHasAttribute('updated_at', $parsedResponse->data[0]);
-        }
+        $this->assertObjectHasAttribute('id', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('label', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('description', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('editorial', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('min_players', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('max_players', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('min_age', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('max_age', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('user_id', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('created_at', $parsedResponse->data[0]);
+        $this->assertObjectHasAttribute('updated_at', $parsedResponse->data[0]);
 
         //Check values of Boardgames
         foreach($boardgames as $key => $boardgame){
@@ -69,6 +69,8 @@ class GetBoardgameListTest extends ApiTestCase
             $this->assertEquals($boardgame->editorial, $parsedResponse->data[$key]->editorial);
             $this->assertEquals($boardgame->min_players, $parsedResponse->data[$key]->min_players);
             $this->assertEquals($boardgame->max_players, $parsedResponse->data[$key]->max_players);
+            $this->assertEquals($boardgame->min_age, $parsedResponse->data[$key]->min_age);
+            $this->assertEquals($boardgame->max_age, $parsedResponse->data[$key]->max_age);
             $this->assertEquals($boardgame->user_id, $parsedResponse->data[$key]->user_id);
             // todo parse Dates? 
             // $this->assertEquals($boardgame->created_at, $parsedResponse->data[$key]->created_at);

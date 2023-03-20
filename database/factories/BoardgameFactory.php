@@ -22,6 +22,8 @@ class BoardgameFactory extends Factory
             'editorial' => fake()->word(),
             'min_players' => fake()->numberBetween($min=1, $max=2),
             'max_players'=>fake()->numberBetween($min=4, $max=10),
+            'min_age' => fake()->numberBetween($min=0, $max=10),
+            'max_age'=>fake()->numberBetween($min=11, $max=99),
             'user_id'=>fake()->numberBetween($min=1, $max=10),
         ];
     }

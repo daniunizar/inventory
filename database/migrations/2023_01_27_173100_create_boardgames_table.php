@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('label');
             $table->string('description')->nullable()->default(null);
             $table->string('editorial')->nullable()->default(null);
-            $table->string('min_players')->nullable()->default(null);
-            $table->string('max_players')->nullable()->default(null);
+            $table->integer('min_players')->nullable()->default(null);
+            $table->integer('max_players')->nullable()->default(null);
+            $table->integer('min_age')->nullable()->default(null);
+            $table->integer('max_age')->nullable()->default(null);
             $table->unsignedBigInteger("user_id");
             $table->timestamps();
         });
