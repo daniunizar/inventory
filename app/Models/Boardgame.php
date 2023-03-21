@@ -20,6 +20,8 @@ class Boardgame extends Model
         'editorial',
         'min_players',
         'max_players',
+        'min_age',
+        'max_age',
         'user_id',
     ];
 

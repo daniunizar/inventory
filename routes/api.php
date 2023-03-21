@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Sanctum
 Route::post('auth/login', [App\Http\Controllers\Api\AuthController::class, 'loginUser'])->name('auth.login');
+Route::post('auth/register', [App\Http\Controllers\Api\AuthController::class, 'registerUser'])->name('auth/register');
 
 // Passwd Reset
 Route::post('auth/forgot-password', [ForgotPasswordController::class, 'requestPasswordResetToken'])->name('auth.forgot-password');
@@ -42,7 +43,8 @@ Route::group([
   Route::get('boardgame/items/{user_id}', [App\Http\Controllers\Boardgame\GetBoardgameListController::class, '__invoke'])->name('boardgame.items');
   Route::get('boardgame/item/show/{boardgame_id}', [App\Http\Controllers\Boardgame\ShowBoardgameController::class, '__invoke'])->name('boardgame.item.show');
   Route::post('boardgame/item/store', [App\Http\Controllers\Boardgame\StoreBoardgameController::class, '__invoke'])->name('boardgame.item.store');
-  Route::put('boardgame/item/update', [App\Http\Controllers\Boardgame\UpdateBoardgameController::class, '__invoke'])->name('boardgame.item.update');
+  Route::post('boardgame/item/create', [App\Http\Controllers\Boardgame\StoreBoardgameController::class, '__invoke'])->name('boardgame.item.create');
+  Route::put('boardgame/item/update/{boardgame_id}', [App\Http\Controllers\Boardgame\UpdateBoardgameController::class, '__invoke'])->name('boardgame.item.update');
   Route::delete('boardgame/item/delete/{boardgame_id}', [App\Http\Controllers\Boardgame\DeleteBoardgameController::class, '__invoke'])->name('boardgame.item.delete');
   //auth
   Route::post('auth/me', 'App\Http\Controllers\Api\AuthController@me');
