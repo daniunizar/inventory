@@ -44,7 +44,6 @@ class UpdateBoardgameTest extends ApiTestCase
         $response->assertStatus(200);
         
         $parsedResponse = json_decode($response->content());
-        // dd($parsedResponse);
         //Check new boardgame values   
         $this->assertTrue(Boardgame::where('id', $parsedResponse->data->id)->exists());
         $this->assertEquals($boardgame->id, $parsedResponse->data->id);
