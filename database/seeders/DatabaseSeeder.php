@@ -22,5 +22,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Boardgame::factory(30)->create();
+
+        $this->call([
+            TagSeeder::class,
+        ]);
     }
 }
