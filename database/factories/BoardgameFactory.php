@@ -27,4 +27,18 @@ class BoardgameFactory extends Factory
             'user_id'=>fake()->numberBetween($min=1, $max=10),
         ];
     }
+
+    /**
+     * Indicate that the user is suspended.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function with_tags()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'tag_ids' => [1,2,3],
+            ];
+        });
+    }
 }

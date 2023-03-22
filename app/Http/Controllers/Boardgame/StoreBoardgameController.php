@@ -9,6 +9,8 @@ use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Events\Boardgame\StoreBoardgameEvent;
+use Illuminate\Support\Facades\DB;
 
 /**
  * This function return all boardgames of the user gotten by param
@@ -24,6 +26,7 @@ class StoreBoardgameController extends Controller
     public function __invoke(StoreBoardgameRequest $request)
     {
         try{
+            DB::beginTransaction();
             $user = User::findOrFail(Auth::id());
             $data = [
                 'label' => $request->input('label'),//can not be null
@@ -35,15 +38,18 @@ class StoreBoardgameController extends Controller
                 'max_age' => $request->input('max_age')??null,
                 'user_id' => $user->id,//cant not be null
             ];
-
             $boardgame = Boardgame::create($data);
-        
+
+            //m:n relationships
+            StoreBoardgameEvent::dispatch($boardgame->id, $request->tag_ids);            
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'data' => $boardgame,
                 'message' => 'OK',
             ], 201);
         }catch(Exception $e){
+            DB::rollBack();
             Log::error($e->getMessage());
             return response()->json([
                 'success' => false,

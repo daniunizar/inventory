@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use App\Events\Boardgame\DeleteBoardgameEvent;
+use Illuminate\Support\Facades\DB;
 
 /**
  * This function return all boardgames of the user gotten by param
@@ -38,16 +40,19 @@ class DeleteBoardgameController extends Controller
             ], 422));
         }
         try{
+            DB::beginTransaction();
             $boardgame = Boardgame::findOrFail($boardgame_id);
 
             Gate::authorize('delete-boardgame', $boardgame); //this sentence do code flow continues if logged user is authorized, and throws exception 403 Unauthorized if logged user is unauthorized and is catched by Catch(Exception $e)
-
+            DeleteBoardgameEvent::dispatch($boardgame->id);
             $boardgame->delete();
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'OK',
             ], 200);
         }catch(Exception $e){
+            DB::rollBack();
             Log::error($e->getMessage());
             return response()->json([
                 'success' => false,

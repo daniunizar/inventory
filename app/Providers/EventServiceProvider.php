@@ -7,6 +7,14 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
+//events
+use App\Events\Boardgame\StoreBoardgameEvent;
+use App\Events\Boardgame\UpdateBoardgameEvent;
+use App\Events\Boardgame\DeleteBoardgameEvent;
+//listeners
+use App\Listeners\SyncBoardgameTagListener;
+use App\Listeners\DetachBoardgameTagListener;
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -18,6 +26,16 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        StoreBoardgameEvent::class => [
+            SyncBoardgameTagListener::class,
+        ],
+        UpdateBoardgameEvent::class => [
+            SyncBoardgameTagListener::class,
+        ],
+        DeleteBoardgameEvent::class => [
+            DetachBoardgameTagListener::class,
+        ],
+
     ];
 
     /**

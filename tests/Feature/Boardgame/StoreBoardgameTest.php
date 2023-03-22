@@ -51,10 +51,16 @@ class StoreBoardgameTest extends ApiTestCase
         $this->assertEquals($this->payloadData['min_age'], $parsedResponse->data->min_age);
         $this->assertEquals($this->payloadData['max_age'], $parsedResponse->data->max_age);
         $this->assertEquals($this->payloadData['user_id'], $parsedResponse->data->user_id);
+
+        //check m:n relationships
+        $boardgame = Boardgame::findOrFail($parsedResponse->data->id);
+        foreach($this->payloadData['tag_ids'] as $tag_id){
+            $this->assertTrue($boardgame->tags()->where('tags.id', $tag_id)->exists());
+        }
     }
 
     public function getPayloadData() :array{
-        $payloadData = Boardgame::factory()->make([
+        $payloadData = Boardgame::factory()->with_tags()->make([
             'user_id'=>Auth::id(),
         ]);
         return $payloadData->getAttributes();
