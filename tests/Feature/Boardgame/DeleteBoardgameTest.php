@@ -43,7 +43,6 @@ class DeleteBoardgameTest extends ApiTestCase
         
         $response->assertStatus(200);
         
-        //Check fields of Boardgames
         $parsedResponse = json_decode($response->content());
         
         $this->assertFalse(Boardgame::where('id', $boardgame->id)->exists());        
