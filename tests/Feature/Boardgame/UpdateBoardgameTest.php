@@ -41,9 +41,6 @@ class UpdateBoardgameTest extends ApiTestCase
         $boardgame->tags()->attach(2);
         $boardgame->tags()->attach(3);
         $this->payloadData = $this->getPayloadData();
-        $this->assertTrue($boardgame->tags()->where('tags.id', 1)->exists());
-        $this->assertTrue($boardgame->tags()->where('tags.id', 2)->exists());
-        $this->assertTrue($boardgame->tags()->where('tags.id', 3)->exists());
 
         $response = $this->put('/api/boardgame/item/update/'.$boardgame->id, $this->payloadData,  $this->userLoginHeaders);
 
@@ -62,19 +59,11 @@ class UpdateBoardgameTest extends ApiTestCase
         $this->assertEquals($this->payloadData['min_age'], $parsedResponse->data->min_age);
         $this->assertEquals($this->payloadData['max_age'], $parsedResponse->data->max_age);
         $this->assertEquals($this->payloadData['user_id'], $parsedResponse->data->user_id);
-
-        //check m:n relationships
-        $boardgame->refresh();
-        $this->assertTrue($boardgame->tags()->where('tags.id', 1)->doesntExist());
-        $this->assertTrue($boardgame->tags()->where('tags.id', 2)->doesntExist());
-        $this->assertTrue($boardgame->tags()->where('tags.id', 3)->doesntExist());
-        $this->assertTrue($boardgame->tags()->where('tags.id', 4)->exists());
     }
 
     public function getPayloadData() :array{
         $payloadData = Boardgame::factory()->make([
             'user_id'=>Auth::id(),
-            'tag_ids' => [4],
         ]);
         return $payloadData->getAttributes();
     }

@@ -60,7 +60,7 @@ class StoreBoardgameTest extends ApiTestCase
     }
 
     public function getPayloadData() :array{
-        $payloadData = Boardgame::factory()->make([
+        $payloadData = Boardgame::factory()->with_tags()->make([
             'user_id'=>Auth::id(),
         ]);
         return $payloadData->getAttributes();

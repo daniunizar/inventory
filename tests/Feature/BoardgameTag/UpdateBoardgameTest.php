@@ -9,8 +9,9 @@ use App\Models\Boardgame;
 use Tests\ApiTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
-class StoreBoardgameTest extends ApiTestCase
+class UpdateBoardgameTest extends ApiTestCase
 {
     use RefreshDatabase;
     private array $userLoginHeaders;
@@ -31,18 +32,28 @@ class StoreBoardgameTest extends ApiTestCase
      *
      * @return void
      */
-    public function test_boardgames_can_be_stored()
+    public function test_boardgames_can_be_updated()
     {
+        $boardgame = Boardgame::factory()->create([
+            'user_id'=>Auth::id(),
+        ]);
+        $boardgame->tags()->attach(1);
+        $boardgame->tags()->attach(2);
+        $boardgame->tags()->attach(3);
         $this->payloadData = $this->getPayloadData();
-        $response = $this->post('/api/boardgame/item/store', $this->payloadData,  $this->userLoginHeaders);
-        
+        $this->assertTrue($boardgame->tags()->where('tags.id', 1)->exists());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 2)->exists());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 3)->exists());
+
+        $response = $this->put('/api/boardgame/item/update/'.$boardgame->id, $this->payloadData,  $this->userLoginHeaders);
+
         //Check response
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         
         $parsedResponse = json_decode($response->content());
-        // dd($parsedResponse);
         //Check new boardgame values   
         $this->assertTrue(Boardgame::where('id', $parsedResponse->data->id)->exists());
+        $this->assertEquals($boardgame->id, $parsedResponse->data->id);
         $this->assertEquals($this->payloadData['label'], $parsedResponse->data->label);
         $this->assertEquals($this->payloadData['description'], $parsedResponse->data->description);
         $this->assertEquals($this->payloadData['editorial'], $parsedResponse->data->editorial);
@@ -53,15 +64,17 @@ class StoreBoardgameTest extends ApiTestCase
         $this->assertEquals($this->payloadData['user_id'], $parsedResponse->data->user_id);
 
         //check m:n relationships
-        $boardgame = Boardgame::findOrFail($parsedResponse->data->id);
-        foreach($this->payloadData['tag_ids'] as $tag_id){
-            $this->assertTrue($boardgame->tags()->where('tags.id', $tag_id)->exists());
-        }
+        $boardgame->refresh();
+        $this->assertTrue($boardgame->tags()->where('tags.id', 1)->doesntExist());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 2)->doesntExist());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 3)->doesntExist());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 4)->exists());
     }
 
     public function getPayloadData() :array{
         $payloadData = Boardgame::factory()->make([
             'user_id'=>Auth::id(),
+            'tag_ids' => [4],
         ]);
         return $payloadData->getAttributes();
     }

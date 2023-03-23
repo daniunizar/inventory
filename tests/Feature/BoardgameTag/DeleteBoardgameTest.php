@@ -38,6 +38,13 @@ class DeleteBoardgameTest extends ApiTestCase
                 "user_id"=>$user->id,
             ]
         );
+        $boardgame->tags()->attach(1);
+        $boardgame->tags()->attach(2);
+        $boardgame->tags()->attach(3);
+
+        $this->assertTrue($boardgame->tags()->where('tags.id', 1)->exists());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 2)->exists());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 3)->exists());
         
         $response = $this->delete('/api/boardgame/item/delete/'.$boardgame->id,  $this->userLoginHeaders);
         
@@ -46,6 +53,11 @@ class DeleteBoardgameTest extends ApiTestCase
         //Check fields of Boardgames
         $parsedResponse = json_decode($response->content());
         
-        $this->assertFalse(Boardgame::where('id', $boardgame->id)->exists());        
+        $this->assertFalse(Boardgame::where('id', $boardgame->id)->exists());
+        
+                $this->assertTrue($boardgame->tags()->where('tags.id', 1)->doesntExist());
+                $this->assertTrue($boardgame->tags()->where('tags.id', 2)->doesntExist());
+                $this->assertTrue($boardgame->tags()->where('tags.id', 3)->doesntExist());
+        
     }
 }
