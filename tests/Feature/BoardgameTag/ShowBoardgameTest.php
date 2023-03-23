@@ -71,9 +71,9 @@ class ShowBoardgameTest extends ApiTestCase
         $this->assertEquals($boardgame->max_age, $parsedResponse->data->max_age);
         $this->assertEquals($boardgame->user_id, $parsedResponse->data->user_id);
         //check tags
-        $this->assertTrue($boardgame->tags()->where('tags.id', 1)->exists());
-        $this->assertTrue($boardgame->tags()->where('tags.id', 2)->exists());
-        $this->assertTrue($boardgame->tags()->where('tags.id', 3)->exists());
+        foreach($tag_ids as $tag_id){
+            $this->assertTrue($boardgame->tags()->where('tags.id', $tag_id)->exists());
+        }
         // todo parse Dates? 
         // $this->assertEquals($boardgame->created_at, $parsedResponse->data[$key]->created_at);
         // $this->assertEquals($boardgame->updated_at, $parsedResponse->data[$key]->updated_at); 

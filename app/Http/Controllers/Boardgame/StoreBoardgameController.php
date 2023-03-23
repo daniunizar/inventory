@@ -41,7 +41,9 @@ class StoreBoardgameController extends Controller
             $boardgame = Boardgame::create($data);
 
             //m:n relationships
-            StoreBoardgameEvent::dispatch($boardgame->id, $request->tag_ids);            
+            if(isset($request->tag_ids)){
+                StoreBoardgameEvent::dispatch($boardgame->id, $request->tag_ids);            
+            }
             DB::commit();
             return response()->json([
                 'success' => true,

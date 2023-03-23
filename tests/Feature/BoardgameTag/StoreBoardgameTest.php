@@ -15,6 +15,7 @@ class StoreBoardgameTest extends ApiTestCase
     use RefreshDatabase;
     private array $userLoginHeaders;
     private $payloadData;
+    protected $tag_ids = [1,2,3];
     protected function setUp(): void
     {
     parent::setUp();
@@ -54,16 +55,15 @@ class StoreBoardgameTest extends ApiTestCase
 
         //check m:n relationships
         $boardgame = Boardgame::findOrFail($parsedResponse->data->id);
-        foreach($this->payloadData['tag_ids'] as $tag_id){
+        foreach($this->tag_ids as $tag_id){
             $this->assertTrue($boardgame->tags()->where('tags.id', $tag_id)->exists());
         }
     }
 
     public function getPayloadData() :array{
-        $tag_ids=[1,2,3];
-        $payloadData = Boardgame::factory()->withTags($tag_ids)->make([
+        $payloadData = Boardgame::factory()->make([
             'user_id'=>Auth::id(),
-            'tag_ids'=>[],
+            'tag_ids'=>$this->tag_ids,
         ]);
         return $payloadData->getAttributes();
     }
