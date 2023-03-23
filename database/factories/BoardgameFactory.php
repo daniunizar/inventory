@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Boardgame;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Boardgame>
@@ -28,17 +30,15 @@ class BoardgameFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the user is suspended.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function with_tags()
+    public function withTags(array $tag_ids)
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'tag_ids' => [1,2,3],
-            ];
+        Log::debug("Entrando en with tags:");
+
+        return $this->afterCreating(function (Boardgame $boardgame) use ($tag_ids) {
+            foreach($tag_ids as $tag_id){
+                Log::debug($tag_id);
+                $boardgame->tags()->attach($tag_id);
+            }
         });
     }
 }

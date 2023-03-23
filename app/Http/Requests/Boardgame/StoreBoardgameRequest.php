@@ -35,7 +35,7 @@ class StoreBoardgameRequest extends FormRequest
             'max_age'       => 'nullable|integer|max:99',
 
             //m:n relationships
-            'tag_ids'       => 'required|array',
+            'tag_ids'       => 'nullable|array',
             'tag_ids.*'     => 'nullable|integer|exists:tags,id',
         ];
     }

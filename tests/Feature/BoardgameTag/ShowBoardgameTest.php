@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Boardgame;
+namespace Tests\Feature\BoardgameTag;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -30,10 +30,11 @@ class ShowBoardgameTest extends ApiTestCase
      *
      * @return void
      */
-    public function test_boardgames_can_be_shown()
+    public function test_boardgames_can_be_shown_with_tags()
     {
         $user = User::where('email', 'test@example.com')->firstOrFail();
-        $boardgame = Boardgame::factory()->create(
+        $tag_ids = [1,2,3];
+        $boardgame = Boardgame::factory()->withTags($tag_ids)->create(
             [
                 "user_id"=>$user->id,
             ]
@@ -57,6 +58,7 @@ class ShowBoardgameTest extends ApiTestCase
         $this->assertObjectHasAttribute('user_id', $parsedResponse->data);
         $this->assertObjectHasAttribute('created_at', $parsedResponse->data);
         $this->assertObjectHasAttribute('updated_at', $parsedResponse->data);
+        $this->assertObjectHasAttribute('tags', $parsedResponse->data);
 
         //Check values of Boardgames
         $this->assertEquals($boardgame->id, $parsedResponse->data->id);
@@ -68,6 +70,10 @@ class ShowBoardgameTest extends ApiTestCase
         $this->assertEquals($boardgame->min_age, $parsedResponse->data->min_age);
         $this->assertEquals($boardgame->max_age, $parsedResponse->data->max_age);
         $this->assertEquals($boardgame->user_id, $parsedResponse->data->user_id);
+        //check tags
+        $this->assertTrue($boardgame->tags()->where('tags.id', 1)->exists());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 2)->exists());
+        $this->assertTrue($boardgame->tags()->where('tags.id', 3)->exists());
         // todo parse Dates? 
         // $this->assertEquals($boardgame->created_at, $parsedResponse->data[$key]->created_at);
         // $this->assertEquals($boardgame->updated_at, $parsedResponse->data[$key]->updated_at); 

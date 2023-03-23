@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Boardgame;
+namespace Tests\Feature\BoardgameTag;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -30,7 +30,7 @@ class DeleteBoardgameTest extends ApiTestCase
      *
      * @return void
      */
-    public function test_boardgames_can_be_delete()
+    public function test_boardgame_tag_relationships_can_be_deleted()
     {
         $user = User::where('email', 'test@example.com')->firstOrFail();
         $boardgame = Boardgame::factory()->create(

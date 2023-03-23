@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Boardgame;
+namespace Tests\Feature\BoardgameTag;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -31,7 +31,7 @@ class StoreBoardgameTest extends ApiTestCase
      *
      * @return void
      */
-    public function test_boardgames_can_be_stored()
+    public function test_boardgames_can_be_stored_with_tags()
     {
         $this->payloadData = $this->getPayloadData();
         $response = $this->post('/api/boardgame/item/store', $this->payloadData,  $this->userLoginHeaders);
@@ -60,8 +60,10 @@ class StoreBoardgameTest extends ApiTestCase
     }
 
     public function getPayloadData() :array{
-        $payloadData = Boardgame::factory()->with_tags()->make([
+        $tag_ids=[1,2,3];
+        $payloadData = Boardgame::factory()->withTags($tag_ids)->make([
             'user_id'=>Auth::id(),
+            'tag_ids'=>[],
         ]);
         return $payloadData->getAttributes();
     }

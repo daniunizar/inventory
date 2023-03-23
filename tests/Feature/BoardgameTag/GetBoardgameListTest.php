@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Boardgame;
+namespace Tests\Feature\BoardgameTag;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -30,7 +30,7 @@ class GetBoardgameListTest extends ApiTestCase
      *
      * @return void
      */
-    public function test_boardgames_can_be_listed()
+    public function test_boardgames_can_be_listed_with_tags()
     {
         $user = User::where('email', 'test@example.com')->firstOrFail();
         $boardgames = Boardgame::factory(3)->create(

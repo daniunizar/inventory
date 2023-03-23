@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Boardgame;
+namespace Tests\Feature\BoardgameTag;
 
 // use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -32,7 +32,7 @@ class UpdateBoardgameTest extends ApiTestCase
      *
      * @return void
      */
-    public function test_boardgames_can_be_updated()
+    public function test_boardgames_can_be_updated_with_tags()
     {
         $boardgame = Boardgame::factory()->create([
             'user_id'=>Auth::id(),
