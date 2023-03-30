@@ -19,8 +19,6 @@ class UpdateBoardgameRequest extends FormRequest
     public function authorize()
     {
         $user = User::findOrFail(Auth::id());
-        Log::debug("Pintando boardgame_id");
-        Log::debug($this->boardgame_id);
         return $user->boardgames()->where('boardgames.id',$this->boardgame_id)->exists();
     }
 
@@ -40,6 +38,10 @@ class UpdateBoardgameRequest extends FormRequest
             'max_players'   => 'nullable|integer|min:1',
             'min_age'       => 'nullable|integer|min:0',
             'max_age'       => 'nullable|integer|max:99',
+            
+            //m:n relationships
+            'tag_ids'       => 'nullable|array',
+            'tag_ids.*'     => 'nullable|integer|exists:tags,id',
         ];
     }
 

@@ -35,7 +35,6 @@ class StoreBoardgameTest extends ApiTestCase
     {
         $this->payloadData = $this->getPayloadData();
         $response = $this->post('/api/boardgame/item/store', $this->payloadData,  $this->userLoginHeaders);
-        
         //Check response
         $response->assertStatus(201);
         
@@ -56,6 +55,7 @@ class StoreBoardgameTest extends ApiTestCase
     public function getPayloadData() :array{
         $payloadData = Boardgame::factory()->make([
             'user_id'=>Auth::id(),
+            'tag_ids'=>[],
         ]);
         return $payloadData->getAttributes();
     }

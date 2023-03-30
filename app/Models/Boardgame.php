@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Boardgame extends Model
 {
@@ -33,5 +34,13 @@ class Boardgame extends Model
     {
         return $this->belongsTo(User::class);
     }
+    /**
+     * The tags that belong to the boardgame.
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
     //METHODS
+    
 }

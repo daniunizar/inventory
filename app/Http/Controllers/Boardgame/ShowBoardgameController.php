@@ -38,6 +38,8 @@ class ShowBoardgameController extends Controller
         }
         try{
             $boardgame = Boardgame::findOrFail($boardgame_id);
+            //add fields
+            $boardgame->tags = $boardgame->tags()->get();
             return response()->json([
                 'success' => true,
                 'data' => $boardgame,
